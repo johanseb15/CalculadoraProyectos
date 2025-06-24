@@ -59,31 +59,47 @@ const WebAgencyEstimator = () => {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    setError('');
+  e.preventDefault();
+  setLoading(true);
+  setError('');
 
-    try {
-      const response = await fetch('http://localhost:3001/api/estimar', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData)
-      });
-
-      if (!response.ok) {
-        throw new Error('Error en la respuesta del servidor');
-      }
-
-      const data = await response.json();
-      setEstimacion(data);
-    } catch (err) {
-      setError('Error al obtener la estimación: ' + err.message);
-    } finally {
-      setLoading(false);
+  // Adaptar el payload al formato que espera el backend
+  const payload = {
+    projectData: {
+      type: formData.tipoProyecto,
+      complexity: formData.complejidad,
+      features: formData.funcionalidades,
+      aiAutomation: 50 // Puedes convertirlo en input luego
+    },
+    teamData: {
+      hourlyRate: 25,
+      teamSize: 1,
+      overheadPercent: 20
     }
   };
+
+  try {
+    const response = await fetch('/api/estimate', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload)
+    });
+
+    if (!response.ok) {
+      throw new Error('Error en la respuesta del servidor');
+    }
+
+    const data = await response.json();
+    setEstimacion(data);
+  } catch (err) {
+    setError('Error al obtener la estimación: ' + err.message);
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   const formatCurrency = (amount) => {
     return new Intl.NumberFormat('es-AR', {
