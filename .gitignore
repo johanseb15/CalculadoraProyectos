@@ -10,4 +10,3 @@ yarn-error.log*
 .idea/
 *.log
 coverage/
-nul
