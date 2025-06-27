@@ -1,0 +1,12 @@
+:root {
+  /* Colores */
+  --color-primary: #8b5cf6;
+  --color-secondary: #06b6d4;
+  --color-dark: #0f172a;
+  
+  /* Gradientes */
+  --gradient-primary: linear-gradient(to right, var(--color-secondary), var(--color-primary));
+  
+  /* Sombras */
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}

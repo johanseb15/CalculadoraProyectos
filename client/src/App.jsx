@@ -1,6 +1,7 @@
 // src/App.js
 import { useState } from 'react';
 import './App.css';
+import './styles/main.css';
 
 function App() {
   const [projectType, setProjectType] = useState('');
@@ -16,17 +17,25 @@ function App() {
   ];
 
   const handleCalculate = async () => {
+    if (!projectType.trim()) {
+      setError('Por favor selecciona un tipo de proyecto');
+      return;
+    }
+
     setLoading(true);
     setError('');
-    
+
     try {
       // Aquí iría la conexión con tu backend
       // const response = await fetch('/api/estimate', {...});
       // Simulación mientras desarrollas:
       await new Promise(resolve => setTimeout(resolve, 1000));
-      // Manejar la respuesta del backend aquí
+
+      // TODO: Replace simulation with actual API call
+      console.log('Calculating estimate for:', projectType);
     } catch (err) {
-      setError('Error al conectar con el backend');
+      setError(err instanceof Error ? err.message : 'Error al conectar con el backend');
+      console.error('Estimation error:', err);
     } finally {
       setLoading(false);
     }
@@ -44,9 +53,9 @@ function App() {
           <h3>¿Qué tipo de proyecto necesitas?</h3>
           
           <div className="project-types">
-            {projectTypes.map((type, index) => (
+            {projectTypes.map((type) => (
               <button
-                key={index}
+                key={type}
                 className={`type-btn ${projectType === type ? 'selected' : ''}`}
                 onClick={() => setProjectType(type)}
               >

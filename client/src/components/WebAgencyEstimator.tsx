@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Calculator, Code, Globe, Zap, CheckCircle, DollarSign, Clock, Users, Sparkles, ArrowRight, TrendingUp, Rocket } from 'lucide-react';
+import '../styles/fadeIn.css';
 
 interface ProjectType {
   value: string;
@@ -77,7 +78,7 @@ const WebAgencyEstimator = () => {
     { value: 'compleja', label: 'Compleja', multiplier: 3, description: 'Soluciones empresariales' }
   ];
 
-  const funcionalidadesDisponibles: { id: string; label: string; icon: string }[] = [
+  const funcionalidadesDisponibles: Feature[] = [
     { id: 'responsive_design', label: 'Diseño Responsivo', icon: '📱' },
     { id: 'cms', label: 'Sistema CMS', icon: '⚙️' },
     { id: 'ecommerce', label: 'E-commerce', icon: '🛒' },
@@ -129,12 +130,46 @@ const WebAgencyEstimator = () => {
         }),
       });
 
-      if (!response.ok) throw new Error('Error en la respuesta del servidor');
+      if (!response.ok) {
+        let errorMsg = `Error del servidor (${response.status})`;
+        try {
+          const errorData = await response.json();
+          if (errorData && errorData.message) {
+            errorMsg += `: ${errorData.message}`;
+          }
+        } catch {
+          // ignore JSON parse error
+        }
+        throw new Error(errorMsg);
+      }
 
-      const data = await response.json();
+      let data: any;
+      try {
+        data = await response.json();
+      } catch {
+        throw new Error('La respuesta del servidor no es un JSON válido.');
+      }
+
+      // Validar estructura esperada
+      if (
+        typeof data !== 'object' ||
+        data === null ||
+        typeof data.costoTotal !== 'number' ||
+        typeof data.tiempoDesarrollo !== 'string' ||
+        typeof data.horasTotales !== 'number'
+      ) {
+        throw new Error('La respuesta del servidor tiene un formato inesperado.');
+      }
+
       setEstimacion(data);
     } catch (err) {
-      setError((err as Error).message || 'Error al conectar con el servidor');
+      if (err instanceof TypeError) {
+        setError('No se pudo conectar con el servidor. Verifique su conexión a Internet.');
+      } else if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError('Ocurrió un error desconocido.');
+      }
     } finally {
       setLoading(false);
     }
@@ -481,18 +516,7 @@ const WebAgencyEstimator = () => {
               </div>
             </div>
           )}
-        </div>
-      </div>
-
-      <style>{`
-  @keyframes fade-in {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-  .animate-fade-in {
-    animation: fade-in 0.6s ease-out;
-  }
-`}</style>
+        </div>      </div>
     </div>
   );
 };
