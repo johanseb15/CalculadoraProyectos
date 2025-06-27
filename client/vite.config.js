@@ -1,8 +1,11 @@
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
+
 export default defineConfig({
-  plugins: [React()],
+  plugins: [react()],
   css: {
-    modules: false, // Si no usas CSS Modules
-    postcss: null   // Si no usas PostCSS
+    modules: false,
+    postcss: null
   },
   server: {
     proxy: {
