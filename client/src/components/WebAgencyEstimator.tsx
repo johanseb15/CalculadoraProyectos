@@ -1,16 +1,58 @@
 import { useState, useEffect } from 'react';
 import { Calculator, Code, Globe, Zap, CheckCircle, DollarSign, Clock, Users, Sparkles, ArrowRight, TrendingUp, Rocket } from 'lucide-react';
 
+interface ProjectType {
+  value: string;
+  label: string;
+  icon: React.ComponentType;
+  description: string;
+  color: string;
+}
+
+interface ComplexityLevel {
+  value: string;
+  label: string;
+  multiplier: number;
+  description: string;
+}
+
+interface Feature {
+  id: string;
+  label: string;
+  icon: string;
+}
+
+interface FormState {
+  tipoProyecto: string;
+  complejidad: string;
+  funcionalidades: string[];
+  tiempoEntrega: string;
+  presupuestoReferencia: string;
+}
+
+interface Estimacion {
+  costoTotal: number;
+  tiempoDesarrollo: string;
+  horasTotales: number;
+  desglose?: {
+    diseno: number;
+    desarrollo: number;
+    testing: number;
+    gestionProyecto: number;
+  };
+  recomendaciones?: string[];
+}
+
 const WebAgencyEstimator = () => {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<FormState>({
     tipoProyecto: '',
     complejidad: '',
     funcionalidades: [],
     tiempoEntrega: '',
     presupuestoReferencia: ''
   });
-  
-  const [estimacion, setEstimacion] = useState(null);
+
+  const [estimacion, setEstimacion] = useState<Estimacion | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [currentStep, setCurrentStep] = useState(1);
@@ -35,7 +77,7 @@ const WebAgencyEstimator = () => {
     { value: 'compleja', label: 'Compleja', multiplier: 3, description: 'Soluciones empresariales' }
   ];
 
-  const funcionalidadesDisponibles = [
+  const funcionalidadesDisponibles: { id: string; label: string; icon: string }[] = [
     { id: 'responsive_design', label: 'Diseño Responsivo', icon: '📱' },
     { id: 'cms', label: 'Sistema CMS', icon: '⚙️' },
     { id: 'ecommerce', label: 'E-commerce', icon: '🛒' },
@@ -48,7 +90,7 @@ const WebAgencyEstimator = () => {
     { id: 'seguridad_avanzada', label: 'Seguridad Avanzada', icon: '🔒' }
   ];
 
-  const handleInputChange = (e) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
@@ -56,7 +98,7 @@ const WebAgencyEstimator = () => {
     }));
   };
 
-  const handleFuncionalidadChange = (funcionalidad) => {
+  const handleFuncionalidadChange = (funcionalidad: string) => {
     setFormData(prev => ({
       ...prev,
       funcionalidades: prev.funcionalidades.includes(funcionalidad)
@@ -65,56 +107,40 @@ const WebAgencyEstimator = () => {
     }));
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError('');
 
-    const payload = {
-      projectData: {
-        type: formData.tipoProyecto,
-        complexity: formData.complejidad,
-        features: formData.funcionalidades,
-        aiAutomation: 50
-      },
-      teamData: {
-        hourlyRate: 25,
-        teamSize: 1,
-        overheadPercent: 20
-      }
-    };
-
     try {
-      // Simulando API call
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
-      // Mock response
-      const mockEstimacion = {
-        costoTotal: Math.floor(Math.random() * 500000) + 100000,
-        tiempoDesarrollo: `${Math.floor(Math.random() * 8) + 2} semanas`,
-        horasTotales: Math.floor(Math.random() * 200) + 50,
-        desglose: {
-          diseno: 50000,
-          desarrollo: 200000,
-          testing: 30000,
-          gestionProyecto: 20000
+      const response = await fetch('/api/estimate', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
         },
-        recomendaciones: [
-          "Considere implementar SEO desde el inicio",
-          "Recomendamos un diseño mobile-first",
-          "La integración de analytics mejorará el ROI"
-        ]
-      };
-      
-      setEstimacion(mockEstimacion);
+        body: JSON.stringify({
+          projectData: {
+            type: formData.tipoProyecto,
+            complexity: formData.complejidad,
+            features: formData.funcionalidades,
+            deliveryTime: formData.tiempoEntrega,
+            budget: formData.presupuestoReferencia
+          }
+        }),
+      });
+
+      if (!response.ok) throw new Error('Error en la respuesta del servidor');
+
+      const data = await response.json();
+      setEstimacion(data);
     } catch (err) {
-      setError('Error al obtener la estimación: ' + err.message);
+      setError((err as Error).message || 'Error al conectar con el servidor');
     } finally {
       setLoading(false);
     }
   };
 
-  const formatCurrency = (amount) => {
+  const formatCurrency = (amount: number): string => {
     return new Intl.NumberFormat('es-AR', {
       style: 'currency',
       currency: 'ARS'
@@ -161,17 +187,15 @@ const WebAgencyEstimator = () => {
           <div className="flex justify-between items-center mb-4">
             {[1, 2, 3, 4].map((step) => (
               <div key={step} className={`flex items-center ${step < 4 ? 'flex-1' : ''}`}>
-                <div className={`w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 ${
-                  currentStep >= step 
-                    ? 'bg-gradient-to-r from-cyan-400 to-purple-500 text-white shadow-lg' 
+                <div className={`w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 ${currentStep >= step
+                    ? 'bg-gradient-to-r from-cyan-400 to-purple-500 text-white shadow-lg'
                     : 'bg-gray-700 text-gray-400'
-                }`}>
+                  }`}>
                   {step}
                 </div>
                 {step < 4 && (
-                  <div className={`flex-1 h-2 mx-4 rounded-full transition-all duration-300 ${
-                    currentStep > step ? 'bg-gradient-to-r from-cyan-400 to-purple-500' : 'bg-gray-700'
-                  }`}></div>
+                  <div className={`flex-1 h-2 mx-4 rounded-full transition-all duration-300 ${currentStep > step ? 'bg-gradient-to-r from-cyan-400 to-purple-500' : 'bg-gray-700'
+                    }`}></div>
                 )}
               </div>
             ))}
@@ -196,11 +220,10 @@ const WebAgencyEstimator = () => {
                         <div
                           key={tipo.value}
                           onClick={() => setFormData(prev => ({ ...prev, tipoProyecto: tipo.value }))}
-                          className={`relative p-6 rounded-2xl cursor-pointer transition-all duration-300 transform hover:scale-105 hover:rotate-1 ${
-                            formData.tipoProyecto === tipo.value
+                          className={`relative p-6 rounded-2xl cursor-pointer transition-all duration-300 transform hover:scale-105 hover:rotate-1 ${formData.tipoProyecto === tipo.value
                               ? `bg-gradient-to-br ${tipo.color} shadow-2xl ring-4 ring-white/50`
                               : 'bg-white/5 hover:bg-white/10 border border-white/20'
-                          }`}
+                            }`}
                         >
                           <div className="text-center">
                             <IconComponent className="w-12 h-12 mx-auto mb-4 text-white" />
@@ -229,11 +252,10 @@ const WebAgencyEstimator = () => {
                       <div
                         key={nivel.value}
                         onClick={() => setFormData(prev => ({ ...prev, complejidad: nivel.value }))}
-                        className={`relative p-6 rounded-2xl cursor-pointer transition-all duration-300 transform hover:scale-105 ${
-                          formData.complejidad === nivel.value
+                        className={`relative p-6 rounded-2xl cursor-pointer transition-all duration-300 transform hover:scale-105 ${formData.complejidad === nivel.value
                             ? 'bg-gradient-to-br from-purple-500 to-pink-500 shadow-2xl ring-4 ring-white/50'
                             : 'bg-white/5 hover:bg-white/10 border border-white/20'
-                        }`}
+                          }`}
                       >
                         <div className="flex items-center justify-between mb-3">
                           <h3 className="text-xl font-bold text-white">{nivel.label}</h3>
@@ -263,11 +285,10 @@ const WebAgencyEstimator = () => {
                       <div
                         key={func.id}
                         onClick={() => handleFuncionalidadChange(func.id)}
-                        className={`relative p-4 rounded-xl cursor-pointer transition-all duration-300 transform hover:scale-105 ${
-                          formData.funcionalidades.includes(func.id)
+                        className={`relative p-4 rounded-xl cursor-pointer transition-all duration-300 transform hover:scale-105 ${formData.funcionalidades.includes(func.id)
                             ? 'bg-gradient-to-r from-cyan-500 to-blue-500 shadow-lg ring-2 ring-white/50'
                             : 'bg-white/5 hover:bg-white/10 border border-white/20'
-                        }`}
+                          }`}
                       >
                         <div className="flex items-center space-x-3">
                           <span className="text-2xl">{func.icon}</span>
@@ -331,7 +352,7 @@ const WebAgencyEstimator = () => {
                     <span>Anterior</span>
                   </button>
                 )}
-                
+
                 {currentStep < 4 ? (
                   <button
                     type="button"
@@ -463,22 +484,15 @@ const WebAgencyEstimator = () => {
         </div>
       </div>
 
-      <style jsx>{`
-        @keyframes fade-in {
-          from {
-            opacity: 0;
-            transform: translateY(20px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-        
-        .animate-fade-in {
-          animation: fade-in 0.6s ease-out;
-        }
-      `}</style>
+      <style>{`
+  @keyframes fade-in {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .animate-fade-in {
+    animation: fade-in 0.6s ease-out;
+  }
+`}</style>
     </div>
   );
 };
