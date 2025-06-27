@@ -1,11 +1,12 @@
-import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react';
-
 export default defineConfig({
-  plugins: [react()],
+  plugins: [React()],
+  css: {
+    modules: false, // Si no usas CSS Modules
+    postcss: null   // Si no usas PostCSS
+  },
   server: {
     proxy: {
-      '/api': 'http://localhost:3001', // redirige todas las llamadas a /api hacia el backend
-    },
-  },
+      '/api': 'http://localhost:3001'
+    }
+  }
 });

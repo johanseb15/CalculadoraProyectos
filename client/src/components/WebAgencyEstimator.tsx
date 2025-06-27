@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Calculator, Code, Globe, Zap, CheckCircle, DollarSign, Clock, Users, Sparkles, ArrowRight, TrendingUp, Rocket } from 'lucide-react';
 import '../styles/fadeIn.css';
+import '../styles/WebAgencyEstimator.css'; // Ruta relativa desde el componente
+import '../styles/animations.css';
 
 interface ProjectType {
   value: string;
