@@ -4,3 +4,7 @@
 @import './components/Calculator.css';
 @import './utilities/animations.css';
 @import './base/typography.css';
+
+
+
+/* Tailwind directives removed. To use Tailwind CSS, include the Tailwind directives (e.g., @tailwind base; @tailwind components; @tailwind utilities;) in a dedicated entry CSS file, or configure Tailwind via your framework's postcss.config.js as appropriate. */

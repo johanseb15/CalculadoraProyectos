@@ -3,7 +3,7 @@ import { Calculator, Code, Globe, Zap, CheckCircle, DollarSign, Clock, Users, Sp
 import '../styles/fadeIn.css';
 import '../styles/WebAgencyEstimator.css'; // Ruta relativa desde el componente
 import '../styles/animations.css';
-
+import '../styles/main.css';
 interface ProjectType {
   value: string;
   label: string;
