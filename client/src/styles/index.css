@@ -1,0 +1,14 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Importa los estilos base */
+@import './base/reset.css';
+@import './base/variables.css';
+@import './base/typography.css';
+
+/* Importa los componentes */
+@import './components/Calculator.css';
+
+/* Las animaciones ahora están definidas en tailwind.config.js */
+/* Puedes usar las clases animate-fade-in, animate-slide-left, y animate-pulse-custom */
