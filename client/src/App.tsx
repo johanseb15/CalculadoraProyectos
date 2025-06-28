@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import './App.css';
 import './styles/main.css';
+import api from './services/api';
 
 function App() {
   const [projectType, setProjectType] = useState('');
@@ -16,30 +17,36 @@ function App() {
     "Rediseño web"
   ];
 
-  const handleCalculate = async () => {
-    if (!projectType.trim()) {
-      setError('Por favor selecciona un tipo de proyecto');
-      return;
-    }
+const handleCalculate = async () => {
+  if (!projectType.trim()) {
+    setError('Por favor selecciona un tipo de proyecto');
+    return;
+  }
 
-    setLoading(true);
-    setError('');
+  setLoading(true);
+  setError('');
 
-    try {
-      // Aquí iría la conexión con tu backend
-      // const response = await fetch('/api/estimate', {...});
-      // Simulación mientras desarrollas:
-      await new Promise(resolve => setTimeout(resolve, 1000));
+  try {
+    const response = await api.post('/estimate', {
+      projectType,
+      timestamp: new Date().toISOString()
+    });
 
-      // TODO: Replace simulation with actual API call
-      console.log('Calculating estimate for:', projectType);
-    } catch (err) {
+    console.log('Estimation result:', response.data);
+    // Handle successful response - maybe navigate to results or update state
+  } catch (err) {
+    if (err.response?.status === 400) {
+      setError('Datos de proyecto inválidos');
+    } else if (err.response?.status >= 500) {
+      setError('Error del servidor. Intenta nuevamente.');
+    } else {
       setError(err instanceof Error ? err.message : 'Error al conectar con el backend');
-      console.error('Estimation error:', err);
-    } finally {
-      setLoading(false);
     }
-  };
+    console.error('Estimation error:', err);
+  } finally {
+    setLoading(false);
+  }
+};
 
   return (
     <div className="app-container">
