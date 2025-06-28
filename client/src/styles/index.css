@@ -12,3 +12,59 @@
 
 /* Las animaciones ahora están definidas en tailwind.config.js */
 /* Puedes usar las clases animate-fade-in, animate-slide-left, y animate-pulse-custom */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* === Estilos personalizados === */
+
+/* Fondo con gradiente animado */
+body {
+  @apply bg-gradient-to-tr from-indigo-200 via-white to-purple-100 min-h-screen text-gray-800 font-sans;
+}
+
+/* Contenedor principal con efecto glass */
+.glass-card {
+  @apply bg-white bg-opacity-20 backdrop-blur-lg shadow-xl rounded-2xl p-6 border border-white border-opacity-30;
+}
+
+/* Botón principal animado */
+.btn-primary {
+  @apply px-5 py-2 rounded-full text-white font-semibold bg-gradient-to-r from-purple-500 to-indigo-500 shadow-lg transition-all duration-300;
+}
+
+.btn-primary:hover {
+  @apply scale-105 shadow-xl;
+}
+
+/* Animación de fade-in */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.6s ease-out both;
+}
+
+/* Barra de progreso */
+.progress-bar {
+  @apply h-2 rounded-full bg-gradient-to-r from-green-400 to-blue-500;
+}
+
+/* Tarjetas interactivas */
+.card-option {
+  @apply cursor-pointer transition-all duration-200 ease-in-out transform hover:scale-105 hover:shadow-md rounded-xl p-4 bg-white/60 backdrop-blur-md;
+}
+
+/* Etiqueta destacada */
+.badge {
+  @apply inline-block bg-indigo-100 text-indigo-800 text-xs px-2 py-1 rounded-full uppercase font-semibold tracking-wide;
+}

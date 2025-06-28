@@ -1,10 +1,9 @@
-/* Importa todos los estilos */
-@import './base/reset.css';
-@import './base/variables.css';
-@import './components/Calculator.css';
-@import './styles/utilities/animations.css';
-@import './styles/utilities/typography.css';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-
-
-/* Tailwind directives removed. To use Tailwind CSS, include the Tailwind directives (e.g., @tailwind base; @tailwind components; @tailwind utilities;) in a dedicated entry CSS file, or configure Tailwind via your framework's postcss.config.js as appropriate. */
+/*
+  La clase .animate-fade-in y la keyframe fadeIn deben definirse en tailwind.config.js para que Tailwind las procese correctamente.
+  El bloque @layer utilities aquí es redundante y puede causar advertencias si la keyframe no está definida en el config.
+  Usa simplemente la clase animate-fade-in de Tailwind.
+*/
