@@ -1,13 +1,13 @@
 import apiClient from './api';
 
-// Prueba simple de conexión a la API
-export async function testApiConnection() {
+// Simple API connectivity test
+export async function testApiConnection(): Promise<any | null> {
   try {
     const response = await apiClient.get('/saludo');
-    console.log('Respuesta de /saludo:', response.data);
+    console.log('API connection test successful:', response.data);
     return response.data;
   } catch (error) {
-    console.error('Error al conectar con la API:', error);
+    console.error('Failed to connect to API:', error);
     return null;
   }
 }

@@ -15,13 +15,26 @@
     "helmet": "^8.1.0",
     "joi": "^17.13.3",
     "jsonwebtoken": "^9.0.2",
-    "mongoose": "^8.16.1"
+    "mongoose": "^8.16.1",
+    "pdfkit": "^0.17.1"
   },
   "devDependencies": {
     "nodemon": "^3.1.10"
   },
   "description": "Backend API for CalculadoraProyectos: intelligent web project estimation, risk analysis, and contract management.",
-  "keywords": ["express", "api", "web", "estimation", "calculator", "projects", "backend", "nodejs", "mongoose", "risk", "contract"],
+  "keywords": [
+    "express",
+    "api",
+    "web",
+    "estimation",
+    "calculator",
+    "projects",
+    "backend",
+    "nodejs",
+    "mongoose",
+    "risk",
+    "contract"
+  ],
   "author": "Johan / CalculadoraProyectos Team",
   "license": "ISC",
   "type": "commonjs"

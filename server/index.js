@@ -1,5 +1,12 @@
 const express = require("express");
 const cors = require("cors");
+const mongoose = require('./db');
+const Estimate = require('./models/Estimate');
+const User = require('./models/User');
+const authRoutes = require('./auth');
+const { generateEstimatePDF } = require('./pdf');
+const jwt = require('jsonwebtoken');
+const fs = require('fs');
 
 const app = express();
 const PORT = 3001;
@@ -173,6 +180,62 @@ const calculateScenarios = (baseEstimate) => {
     }
   };
 };
+
+// --- Rutas de autenticación ---
+app.use('/api/auth', authRoutes);
+
+// Middleware de autenticación JWT
+function requireAuth(req, res, next) {
+  const auth = req.headers.authorization;
+  if (!auth) return res.status(401).json({ error: 'Token requerido' });
+  const token = auth.split(' ')[1];
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    req.user = decoded;
+    next();
+  } catch (err) {
+    res.status(401).json({ error: 'Token inválido' });
+  }
+}
+
+// --- Endpoint para guardar y listar estimaciones (protegido) ---
+app.get('/api/estimates', requireAuth, async (req, res) => {
+  const estimates = await Estimate.find({ user: req.user.id }).sort({ createdAt: -1 });
+  res.json(estimates);
+});
+
+// --- Endpoint para guardar estimación (usado por el frontend) ---
+app.post('/api/estimate', async (req, res) => {
+  try {
+    const { estimate, projectData, teamData } = req.body;
+    let user = null;
+    if (req.headers.authorization) {
+      try {
+        const token = req.headers.authorization.split(' ')[1];
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        user = decoded.id;
+      } catch {}
+    }
+    const saved = await Estimate.create({ user, estimate, projectData, teamData });
+    res.json({ message: 'Estimación guardada', id: saved._id });
+  } catch (err) {
+    res.status(500).json({ error: 'No se pudo guardar la estimación', details: err.message });
+  }
+});
+
+// --- Endpoint para descargar PDF ---
+app.post('/api/estimate/pdf', async (req, res) => {
+  try {
+    const { estimate, projectData, teamData } = req.body;
+    const doc = generateEstimatePDF(estimate, projectData, teamData);
+    res.setHeader('Content-Type', 'application/pdf');
+    res.setHeader('Content-Disposition', 'attachment; filename=estimacion.pdf');
+    doc.pipe(res);
+    doc.end();
+  } catch (err) {
+    res.status(500).json({ error: 'No se pudo generar el PDF', details: err.message });
+  }
+});
 
 // Endpoints
 

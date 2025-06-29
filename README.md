@@ -334,3 +334,67 @@ Si tienes algún problema o pregunta:
 ⭐ **¡Si te gusta este proyecto, dale una estrella en GitHub!**
 
 Desarrollado con ❤️ por [johanseb15](https://github.com/johanseb15)
+
+---
+
+# CalculadoraProyectos - MVP Fullstack
+
+Calculadora inteligente de costos para agencias web con IA. Incluye estimación, generación de PDF, autenticación y persistencia en base de datos.
+
+## Características
+- Estimación de proyectos web con IA
+- Envío y registro de estimaciones en backend (Express + MongoDB)
+- Descarga de PDF de la estimación
+- Autenticación de usuario (JWT)
+- UI moderna y validación robusta
+
+## Instalación
+
+1. **Clona el repositorio:**
+   ```bash
+   git clone <repo-url>
+   cd CalculadoraProyectos
+   ```
+2. **Instala dependencias:**
+   ```bash
+   cd client && npm install
+   cd ../server && npm install
+   ```
+3. **Configura variables de entorno:**
+   - Crea un archivo `.env` en `server/` con:
+     ```env
+     MONGODB_URI=mongodb://localhost:27017/calculadora
+     JWT_SECRET=tu_clave_secreta
+     ```
+4. **Inicia el backend:**
+   ```bash
+   cd server
+   npm run dev
+   ```
+5. **Inicia el frontend:**
+   ```bash
+   cd ../client
+   npm run dev
+   ```
+
+## Endpoints principales
+- `POST /api/estimate` - Calcula y guarda una estimación
+- `POST /api/auth/login` - Login de usuario
+- `POST /api/auth/register` - Registro de usuario
+- `GET /api/estimates` - Listado de estimaciones (requiere JWT)
+
+## Generar PDF
+- Haz clic en "Descargar PDF" tras obtener una estimación.
+
+## Autenticación
+- El backend usa JWT. Regístrate y logueate para acceder a tus estimaciones.
+
+## Base de datos
+- MongoDB almacena usuarios y estimaciones.
+
+## Stack
+- **Frontend:** React + Vite + Tailwind
+- **Backend:** Express + MongoDB + JWT
+
+## Licencia
+MIT
