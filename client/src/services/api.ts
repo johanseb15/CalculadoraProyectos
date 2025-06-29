@@ -10,9 +10,10 @@ interface ImportMeta {
 }
 
 import axios from 'axios';
+import { API_BASE_URL } from './apiConfig';
 
 const apiClient = axios.create({
-  baseURL: import.meta.env.VITE_REACT_APP_API_URL || 'http://localhost:5000/api',
+  baseURL: API_BASE_URL,
   headers: { 
     'Content-Type': 'application/json',
   }

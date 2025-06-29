@@ -1,7 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App.jsx';
-import './index.css'; // ← Asegurate de que esta línea esté
+import './styles/index.css';
+import { testApiConnection } from './services/testApi';
+
+testApiConnection(); // Prueba la conexión al backend al iniciar
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
