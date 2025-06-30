@@ -8,8 +8,7 @@ const EstimateSchema = new mongoose.Schema({
       complexity:        { type: String, enum: ['low', 'medium', 'high'], required: true },
       deadline:          { type: Date },
       description:       { type: String, trim: true }
-    },
-    required: true
+    }
   },
   teamData: {
     type: {
@@ -21,8 +20,7 @@ const EstimateSchema = new mongoose.Schema({
         designer:       { type: Number, min: 0, default: 0 },
         projectManager: { type: Number, min: 0, default: 0 }
       }
-    },
-    required: true
+    }
   },
   estimate: {
     type: {
@@ -33,8 +31,7 @@ const EstimateSchema = new mongoose.Schema({
         design:         { type: Number, min: 0 },
         management:     { type: Number, min: 0 }
       }
-    },
-    required: true
+    }
   },
   createdAt: { type: Date, default: Date.now }
 }, {

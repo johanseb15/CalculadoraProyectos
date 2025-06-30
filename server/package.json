@@ -1,41 +1,18 @@
 {
-  "name": "server",
+  "name": "calculadora-proyectos-server",
   "version": "1.0.0",
+  "description": "Backend para calculadora de proyectos",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon index.js",
-    "start": "node index.js"
+    "start": "node index.js",
+    "dev": "nodemon index.js"
   },
   "dependencies": {
-    "bcryptjs": "^3.0.2",
+    "express": "^4.18.2",
     "cors": "^2.8.5",
-    "dotenv": "^16.6.1",
-    "express": "^4.21.2",
-    "express-rate-limit": "^7.5.1",
-    "helmet": "^8.1.0",
-    "joi": "^17.13.3",
-    "jsonwebtoken": "^9.0.2",
-    "mongoose": "^8.16.1",
-    "pdfkit": "^0.17.1"
+    "dotenv": "^16.3.1"
   },
   "devDependencies": {
-    "nodemon": "^3.1.10"
-  },
-  "description": "Backend API for CalculadoraProyectos: intelligent web project estimation, risk analysis, and contract management.",
-  "keywords": [
-    "express",
-    "api",
-    "web",
-    "estimation",
-    "calculator",
-    "projects",
-    "backend",
-    "nodejs",
-    "mongoose",
-    "risk",
-    "contract"
-  ],
-  "author": "Johan / CalculadoraProyectos Team",
-  "license": "ISC",
-  "type": "commonjs"
+    "nodemon": "^3.0.1"
+  }
 }
