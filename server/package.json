@@ -14,5 +14,11 @@
   },
   "devDependencies": {
     "nodemon": "^3.0.1"
+  },
+  "author": "Johan Sebastian",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/johanseb15/CalculadoraProyectos"
   }
 }

@@ -1,7 +1,9 @@
 const express = require('express');
 const router = express.Router();
+const { basePrices, featurePrices, complexityMultipliers } = require('../config/estimationConfig');
+const logger = require('../config/logger');
 
-// Endpoint para calcular estimaciones
+// Endpoint to calculate project estimates
 router.post('/estimate', (req, res) => {
   try {
     const { 
@@ -12,35 +14,7 @@ router.post('/estimate', (req, res) => {
       integrations = []
     } = req.body;
 
-    console.log('Calculando estimación para:', { projectType, complexity, features });
-
-    // Precios base por tipo de proyecto
-    const basePrices = {
-      'Sitio web básico': 500,
-      'E-commerce': 1500,
-      'Aplicación web': 3000,
-      'Landing page': 300,
-      'Rediseño web': 800
-    };
-
-    // Precios por características adicionales
-    const featurePrices = {
-      'SEO optimizado': 200,
-      'Diseño responsive': 150,
-      'Panel de administración': 400,
-      'Integración de pagos': 300,
-      'Chat en vivo': 100,
-      'Blog': 200,
-      'Galería de imágenes': 100,
-      'Formularios de contacto': 50
-    };
-
-    // Multiplicadores por complejidad
-    const complexityMultipliers = {
-      'Baja': 1,
-      'Media': 1.5,
-      'Alta': 2.5
-    };
+    logger.info(`Calculando estimación para: ${JSON.stringify({ projectType, complexity, features })}`);
 
     // Cálculo base
     let basePrice = basePrices[projectType] || 500;
@@ -88,13 +62,12 @@ router.post('/estimate', (req, res) => {
     res.json(response);
 
   } catch (error) {
-    console.error('Error en /api/estimate:', error);
+    logger.error(`Error en /api/estimate: ${error.message}`);
     res.status(500).json({
       success: false,
       error: 'Error interno del servidor',
-      message: error.message
-    });
-  }
+      message: process.env.NODE_ENV === 'development' ? error.message : undefined
+    });  }
 });
 
 module.exports = router;
