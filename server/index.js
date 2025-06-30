@@ -42,12 +42,21 @@ app.post('/api/projects', (req, res) => {
     success: false,
     error: 'Project persistence not implemented'
   });
-});// Manejo de errores
+});
+
+// 404 handler for unknown routes
+app.use((req, res, next) => {
+  res.status(404).json({ success: false, error: 'Endpoint not found' });
+});
+
+// Error handler
 app.use((err, req, res, next) => {
-  console.error('💥 Error:', err.stack);
+  const logger = require('./src/config/logger');
+  logger.error(`Unhandled error: ${err.stack}`);
   res.status(500).json({
     success: false,
-    error: 'Algo salió mal!'
+    error: 'Internal server error',
+    message: process.env.NODE_ENV === 'development' ? err.message : undefined
   });
 });
 

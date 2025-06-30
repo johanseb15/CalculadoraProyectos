@@ -2,9 +2,10 @@ const express = require('express');
 const router = express.Router();
 const { basePrices, featurePrices, complexityMultipliers } = require('../config/estimationConfig');
 const logger = require('../config/logger');
+const validateEstimate = require('../middleware/validateEstimate');
 
 // Endpoint to calculate project estimates
-router.post('/estimate', (req, res) => {
+router.post('/estimate', validateEstimate, (req, res) => {
   try {
     const { 
       projectType, 
