@@ -84,7 +84,7 @@ npm install
 Crear archivo `.env` en la carpeta `server/`:
 ```bash
 # server/.env
-PORT=5000
+PORT=3001
 NODE_ENV=development
 DB_CONNECTION_STRING=your_database_url
 JWT_SECRET=your_jwt_secret_key
@@ -95,8 +95,8 @@ AI_API_KEY=your_ai_service_key
 Crear archivo `.env` en la carpeta `client/`:
 ```bash
 # client/.env
-REACT_APP_API_URL=http://localhost:5000/api
-REACT_APP_ENVIRONMENT=development
+VITE_API_URL=http://localhost:3001/api
+VITE_APP_ENVIRONMENT=development
 ```
 
 ### Ejecución en Desarrollo
@@ -128,7 +128,7 @@ npm start
 
 La aplicación estará disponible en:
 - **Frontend**: [http://localhost:3000](http://localhost:3000)
-- **Backend API**: [http://localhost:5000](http://localhost:5000)
+- **Backend API**: [http://localhost:3001](http://localhost:3001)
 
 ## 🛠️ Scripts Disponibles
 

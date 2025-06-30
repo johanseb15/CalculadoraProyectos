@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import './App.css';
 import './styles/main.css';
-import api from './services/api';
+import api from './services/api.ts';
 
 function App() {
   const [projectType, setProjectType] = useState('');
