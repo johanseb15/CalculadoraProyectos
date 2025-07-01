@@ -76,4 +76,106 @@ app.use(errorHandler);
 
 ---
 
+## Estructura Modular Recomendada
+
+```
+server/
+  features/
+    estimates/
+      estimates.routes.js
+      estimates.controller.js
+      estimates.service.js
+      estimates.test.js
+    auth/
+      auth.routes.js
+      auth.controller.js
+      auth.service.js
+  middleware/
+  models/
+  config/
+  index.js
+```
+
+- Separa lógica de negocio en servicios (`.service.js`) y controladores (`.controller.js`).
+- Agrupa por feature/dominio para escalar mejor.
+
+## Ejemplo de Servicio Modular
+
+```js
+// features/estimates/estimates.service.js
+const Estimate = require('../../models/Estimate');
+
+exports.createEstimate = async (data) => {
+  return Estimate.create(data);
+};
+
+exports.getEstimatesByUser = async (userId) => {
+  return Estimate.find({ userId }).sort({ createdAt: -1 });
+};
+```
+
+## CI/CD: Ejemplo de Workflow GitHub Actions
+
+Crea `.github/workflows/nodejs.yml`:
+
+```yaml
+name: Node.js CI
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+      - run: npm install
+      - run: npm test
+```
+
+## Validación Frontend (React)
+
+```js
+// Ejemplo de validación de email
+const validateEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+<input
+  type="email"
+  value={email}
+  onChange={e => setEmail(e.target.value)}
+  className={isValid ? '' : 'border-red-500'}
+/>
+{!isValid && <span>Email inválido</span>}
+```
+
+## Dark Mode con Tailwind
+
+Agrega `darkMode: 'class'` en `tailwind.config.js` y alterna la clase `dark` en `<body>`:
+
+```js
+// tailwind.config.js
+module.exports = {
+  darkMode: 'class',
+  // ...
+}
+```
+
+```js
+// En tu componente raíz
+<button onClick={() => document.body.classList.toggle('dark')}>Toggle Dark Mode</button>
+```
+
+## Planificación MVP v2
+
+1. Elige 1-2 features de alto valor (ej: historial de estimaciones, exportar a Excel, colaboración multiusuario).
+2. Prototipa en Figma o wireframe rápido.
+3. Define endpoints y flujos mínimos.
+4. Implementa primero la lógica de backend y luego la UI.
+
+---
+
 Consulta la documentación Swagger para detalles de cada endpoint.

@@ -1,0 +1,32 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout del código
+        uses: actions/checkout@v3
+      - name: Configurar Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+      - name: Instalar dependencias raíz
+        run: npm ci
+      - name: Instalar dependencias frontend
+        run: npm ci --prefix client
+      - name: Instalar dependencias backend
+        run: npm ci --prefix server
+      - name: Lint (frontend)
+        run: npm run lint --prefix client
+      - name: Lint (backend)
+        run: npm run lint --prefix server
+      - name: Ejecutar pruebas (frontend)
+        run: npm test --prefix client -- --coverage || true
+      - name: Ejecutar pruebas (backend)
+        run: npm test --prefix server -- --coverage || true

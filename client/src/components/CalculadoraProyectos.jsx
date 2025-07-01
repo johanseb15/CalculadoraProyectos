@@ -1,3 +1,6 @@
+// Este archivo ha sido migrado a la nueva estructura modular (Estimator).
+// Puedes eliminarlo si ya no lo necesitas.
+
 import React, { useState, useEffect } from 'react';
 import { Calculator, Sparkles, ArrowRight, Download, Eye, Users, TrendingUp, Zap, Shield, Clock, Star, Menu, X, ChevronDown, Check, Plus, Minus } from 'lucide-react';
 import Button from '../ui/Button';

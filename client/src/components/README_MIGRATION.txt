@@ -1,0 +1,1 @@
+Los archivos CalculadoraProyectos.jsx y CalculadoraProyectos.module.css han sido migrados a la nueva estructura modular (Estimator). Puedes eliminar estos archivos si no los necesitas más. Se ha creado un respaldo con extensión .bak por seguridad.
