@@ -131,20 +131,7 @@ router.post('/',
     body('totalPrice').optional().isNumeric(),
     body('basePrice').optional().isNumeric(),
     body('featuresPrice').optional().isNumeric(),
-      const estimate = await Estimate.create({
-        projectType: req.body.projectType,
-        features: req.body.features,
-        complexity: req.body.complexity,
-        pages: req.body.pages,
-        integrations: req.body.integrations,
-        totalPrice: req.body.totalPrice,
-        basePrice: req.body.basePrice,
-        featuresPrice: req.body.featuresPrice,
-        complexityMultiplier: req.body.complexityMultiplier,
-        estimatedWeeks: req.body.estimatedWeeks,
-        breakdown: req.body.breakdown,
-        userId: req.user.userId
-      });    body('estimatedWeeks').optional().isNumeric(),
+    body('estimatedWeeks').optional().isNumeric(),
     body('breakdown').optional().isObject(),
   ],
   async (req, res) => {
@@ -194,3 +181,12 @@ router.delete('/:id', auth, async (req, res) => {
 });
 
 module.exports = router;
+
+if (!process.env.JWT_SECRET) {
+  throw new Error('JWT_SECRET no está definido en las variables de entorno. Configura JWT_SECRET para producción.');
+}
+
+JWT_SECRET=your_super_secret_key_here
+MONGODB_URI=mongodb://localhost/calculadora
+CORS_ORIGIN=http://localhost:5173
+PORT=3001

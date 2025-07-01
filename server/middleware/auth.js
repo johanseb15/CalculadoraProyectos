@@ -1,10 +1,9 @@
 const jwt = require('jsonwebtoken');
--const JWT_SECRET = process.env.JWT_SECRET || 'changeme_secret';
-+const JWT_SECRET = process.env.JWT_SECRET;
-+
-+if (!JWT_SECRET) {
-+  throw new Error('JWT_SECRET environment variable is required');
-+}
+const JWT_SECRET = process.env.JWT_SECRET;
+
+if (!JWT_SECRET) {
+  throw new Error('JWT_SECRET environment variable is required');
+}
 module.exports = function(req, res, next) {
   const authHeader = req.headers.authorization;
   if (!authHeader || !authHeader.startsWith('Bearer ')) {

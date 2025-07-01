@@ -6,11 +6,10 @@ require('dotenv').config();
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-// Importar el estimate router DRY
-const estimateRouter = require('./src/routes/estimate');
-const authRoutes = require('./src/routes/auth');
-const estimatesRoutes = require('./src/routes/estimates');
-const pdfRoutes = require('./src/routes/pdf');
+// Importar routers (corrigiendo rutas)
+const authRoutes = require('./routes/auth');
+const estimatesRoutes = require('./routes/estimates');
+const pdfRoutes = require('./routes/pdf');
 
 // Middleware
 app.use(cors({
@@ -32,7 +31,6 @@ app.get('/', (req, res) => {
 });
 
 // Usar el router externo para /api/estimate
-app.use('/api', estimateRouter);
 app.use('/api/auth', authRoutes);
 app.use('/api/estimates', estimatesRoutes);
 app.use('/api/pdf', pdfRoutes);

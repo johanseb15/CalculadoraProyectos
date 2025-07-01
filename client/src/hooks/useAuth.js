@@ -6,6 +6,11 @@ export function useAuth() {
     try {
       const saved = localStorage.getItem('user');
       return saved ? JSON.parse(saved) : null;
+    } catch (error) {
+      console.error('Failed to get user from localStorage:', error);
+      return null;
+    }
+  });
   const [token, setToken] = useState(() => {
     try {
       return localStorage.getItem('token') || null;
@@ -13,10 +18,7 @@ export function useAuth() {
       console.error('Failed to get token from localStorage:', error);
       return null;
     }
-  });      return null;
-    }
   });
-  const [token, setToken] = useState(() => localStorage.getItem('token') || null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
 
