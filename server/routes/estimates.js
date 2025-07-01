@@ -182,7 +182,3 @@ router.delete('/:id', auth, async (req, res) => {
 
 module.exports = router;
 
-if (!process.env.JWT_SECRET) {
-  throw new Error('JWT_SECRET no está definido en las variables de entorno. Configura JWT_SECRET para producción.');
-}
-
