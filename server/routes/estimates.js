@@ -2,7 +2,16 @@ const express = require('express');
 const Estimate = require('../models/Estimate');
 const auth = require('../middleware/auth');
 const { body, validationResult } = require('express-validator');
+const rateLimit = require('express-rate-limit');
 const router = express.Router();
+
+const estimateLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutos
+  max: 10, // máximo 10 requests por IP
+  message: { message: 'Demasiadas solicitudes de estimación, intenta más tarde.' },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
 
 /**
  * @swagger
@@ -111,6 +120,7 @@ const router = express.Router();
 
 // Crear nueva estimación
 router.post('/',
+  estimateLimiter,
   auth,
   [
     body('projectType').isString().notEmpty(),
@@ -121,8 +131,20 @@ router.post('/',
     body('totalPrice').optional().isNumeric(),
     body('basePrice').optional().isNumeric(),
     body('featuresPrice').optional().isNumeric(),
-    body('complexityMultiplier').optional().isNumeric(),
-    body('estimatedWeeks').optional().isNumeric(),
+      const estimate = await Estimate.create({
+        projectType: req.body.projectType,
+        features: req.body.features,
+        complexity: req.body.complexity,
+        pages: req.body.pages,
+        integrations: req.body.integrations,
+        totalPrice: req.body.totalPrice,
+        basePrice: req.body.basePrice,
+        featuresPrice: req.body.featuresPrice,
+        complexityMultiplier: req.body.complexityMultiplier,
+        estimatedWeeks: req.body.estimatedWeeks,
+        breakdown: req.body.breakdown,
+        userId: req.user.userId
+      });    body('estimatedWeeks').optional().isNumeric(),
     body('breakdown').optional().isObject(),
   ],
   async (req, res) => {

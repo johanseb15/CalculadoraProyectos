@@ -7,15 +7,14 @@ export default function AuthForm() {
   const { handleLogin, handleRegister, error, loading } = useAuth();
   const [isLogin, setIsLogin] = useState(true);
   const [form, setForm] = useState({ email: '', password: '', name: '' });
-  const [success, setSuccess] = useState(false);
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    setSuccess(false);
-    const ok = isLogin
-      ? await handleLogin({ email: form.email, password: form.password })
-      : await handleRegister(form);
-    if (ok) setSuccess(true);
+    if (isLogin) {
+      await handleLogin({ email: form.email, password: form.password });
+    } else {
+      await handleRegister(form);
+    }
   };
 
   return (
@@ -23,20 +22,50 @@ export default function AuthForm() {
       <h2 style={{ textAlign: 'center', fontWeight: 700, fontSize: 24, marginBottom: 24 }}>
         {isLogin ? 'Iniciar sesión' : 'Crear cuenta'}
       </h2>
-      <form onSubmit={onSubmit}>
+      <form onSubmit={onSubmit} noValidate>
         {!isLogin && (
           <div style={{ marginBottom: 16 }}>
-            <label>Nombre</label>
-            <input type="text" value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))} required style={{ width: '100%', padding: 8, borderRadius: 8, border: '1px solid #ddd', marginTop: 4 }} />
+            <label htmlFor="name">Nombre</label>
+            <input
+              id="name"
+              type="text"
+              value={form.name}
+              onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
+              required
+              minLength={2}
+              aria-required="true"
+              aria-invalid={form.name.length > 0 && form.name.length < 2}
+              style={{ width: '100%', padding: 8, borderRadius: 8, border: '1px solid #ddd', marginTop: 4 }}
+            />
           </div>
         )}
         <div style={{ marginBottom: 16 }}>
-          <label>Email</label>
-          <input type="email" value={form.email} onChange={e => setForm(f => ({ ...f, email: e.target.value }))} required style={{ width: '100%', padding: 8, borderRadius: 8, border: '1px solid #ddd', marginTop: 4 }} />
+          <label htmlFor="email">Email</label>
+          <input
+            id="email"
+            type="email"
+            value={form.email}
+            onChange={e => setForm(f => ({ ...f, email: e.target.value }))}
+            required
+            pattern="^[^@\s]+@[^@\s]+\.[^@\s]+$"
+            aria-required="true"
+            aria-invalid={form.email.length > 0 && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(form.email)}
+            style={{ width: '100%', padding: 8, borderRadius: 8, border: '1px solid #ddd', marginTop: 4 }}
+          />
         </div>
         <div style={{ marginBottom: 16 }}>
-          <label>Contraseña</label>
-          <input type="password" value={form.password} onChange={e => setForm(f => ({ ...f, password: e.target.value }))} required style={{ width: '100%', padding: 8, borderRadius: 8, border: '1px solid #ddd', marginTop: 4 }} />
+          <label htmlFor="password">Contraseña</label>
+          <input
+            id="password"
+            type="password"
+            value={form.password}
+            onChange={e => setForm(f => ({ ...f, password: e.target.value }))}
+            required
+            minLength={6}
+            aria-required="true"
+            aria-invalid={form.password.length > 0 && form.password.length < 6}
+            style={{ width: '100%', padding: 8, borderRadius: 8, border: '1px solid #ddd', marginTop: 4 }}
+          />
         </div>
         <Button type="submit" disabled={loading} style={{ width: '100%', fontWeight: 600, fontSize: 18 }}>
           {loading ? 'Procesando...' : isLogin ? 'Entrar' : 'Registrarse'}
@@ -48,7 +77,6 @@ export default function AuthForm() {
         </button>
       </div>
       {error && <ErrorAlert>{error}</ErrorAlert>}
-      {success && <div style={{ color: '#16a34a', textAlign: 'center', marginTop: 12 }}>¡Bienvenido!</div>}
     </div>
   );
 }

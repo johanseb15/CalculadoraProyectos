@@ -3,15 +3,26 @@ import { login, register } from '../services/authApi';
 
 export function useAuth() {
   const [user, setUser] = useState(() => {
-    const saved = localStorage.getItem('user');
-    return saved ? JSON.parse(saved) : null;
+    try {
+      const saved = localStorage.getItem('user');
+      return saved ? JSON.parse(saved) : null;
+  const [token, setToken] = useState(() => {
+    try {
+      return localStorage.getItem('token') || null;
+    } catch (error) {
+      console.error('Failed to get token from localStorage:', error);
+      return null;
+    }
+  });      return null;
+    }
   });
   const [token, setToken] = useState(() => localStorage.getItem('token') || null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
 
   const handleLogin = async (data) => {
-    setLoading(true); setError(null);
+    setLoading(true);
+    setError(null);
     try {
       const res = await login(data);
       setUser(res.user);
@@ -28,7 +39,8 @@ export function useAuth() {
   };
 
   const handleRegister = async (data) => {
-    setLoading(true); setError(null);
+    setLoading(true);
+    setError(null);
     try {
       await register(data);
       return await handleLogin({ email: data.email, password: data.password });

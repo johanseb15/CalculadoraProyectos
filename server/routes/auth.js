@@ -4,7 +4,10 @@ const User = require('../models/User');
 const { body, validationResult } = require('express-validator');
 const router = express.Router();
 
-const JWT_SECRET = process.env.JWT_SECRET || 'changeme_secret';
+const JWT_SECRET = process.env.JWT_SECRET;
+if (!JWT_SECRET) {
+  throw new Error('JWT_SECRET no está definido en las variables de entorno. Configura JWT_SECRET para producción.');
+}
 
 /**
  * @swagger
@@ -97,7 +100,7 @@ router.post('/register',
 router.post('/login',
   [
     body('email').isEmail().withMessage('Email inválido'),
-    body('password').isLength({ min: 6 }).withMessage('Contraseña requerida')
+    body('password').isLength({ min: 6 }).withMessage('La contraseña debe tener al menos 6 caracteres')
   ],
   async (req, res) => {
     const errors = validationResult(req);
