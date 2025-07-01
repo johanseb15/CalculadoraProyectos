@@ -3,8 +3,7 @@ import React, { useState } from 'react';
 import { Shield } from 'lucide-react';
 const ContactForm = ({ formData, setFormData }) => {
   const [errors, setErrors] = useState({ email: null });
-  const validateEmail = (email) => /.+@.+\..+/.test(email);
-  return (
+  const validateEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);  return (
     <div className="space-y-6">
       <h2 className="text-3xl font-bold text-white mb-8 text-center">Información de contacto</h2>
       <div className="max-w-md mx-auto space-y-6">

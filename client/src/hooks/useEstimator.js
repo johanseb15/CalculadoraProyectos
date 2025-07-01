@@ -24,29 +24,45 @@ const useEstimator = () => {
   
   const calculateEstimate = async () => {
     setIsCalculating(true);
-    await Promise.resolve();
-    const selectedProject = projectTypes.find(p => p.id === formData.projectType);
-    const basePrice = selectedProject?.basePrice || 0;
-    const featuresPrice = formData.features.reduce((total, featureId) => {
-      const feature = features.find(f => f.id === featureId);
-      return total + (feature?.price || 0);
-    }, 0);
-    const complexityMultiplier = complexityMultipliers[formData.complexity].multiplier;
-    const timelineMultiplier = formData.timeline === '2-4' ? 1.3 : formData.timeline === '6-8' ? 0.9 : 1;
-    const totalCost = Math.round((basePrice + featuresPrice) * complexityMultiplier * timelineMultiplier);
-    setEstimatedCost({
-      total: totalCost,
-      breakdown: {
-        base: basePrice,
-        features: featuresPrice,
-        complexity: complexityMultiplier,
-        timeline: timelineMultiplier
+    try {
+      const selectedProject = projectTypes.find(p => p.id === formData.projectType);
+      if (!selectedProject) {
+        throw new Error('Project type not found');
       }
-    });
-    setIsCalculating(false);
-    setShowResults(true);
+      const basePrice = selectedProject.basePrice || 0;
+      const featuresPrice = formData.features.reduce((total, featureId) => {
+        const feature = features.find(f => f.id === featureId);
+        return total + (feature?.price || 0);
+      }, 0);
+      const complexityMultiplier = complexityMultipliers[formData.complexity].multiplier;
+      const timelineMultiplier =
+        formData.timeline === '2-4'
+          ? 1.3
+          : formData.timeline === '6-8'
+          ? 0.9
+          : 1;
+      const totalCost = Math.round(
+        (basePrice + featuresPrice) *
+          complexityMultiplier *
+          timelineMultiplier
+      );
+      setEstimatedCost({
+        total: totalCost,
+        breakdown: {
+          base: basePrice,
+          features: featuresPrice,
+          complexity: complexityMultiplier,
+          timeline: timelineMultiplier,
+        },
+      });
+      setShowResults(true);
+    } catch (error) {
+      console.error('Error calculating estimate:', error);
+      // TODO: surface error to the user (e.g. setError state)
+    } finally {
+      setIsCalculating(false);
+    }
   };
-
   const nextStep = () => {
     if (currentStep < 4) setCurrentStep(currentStep + 1);
   };

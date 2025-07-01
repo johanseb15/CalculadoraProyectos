@@ -1,6 +1,5 @@
 module.exports = {
   testEnvironment: 'node',
-  testMatch: ['**/test/**/*.test.js'],
-  collectCoverage: true,
+  testMatch: ['**/?(*.)+(spec|test).js'],  collectCoverage: true,
   coverageDirectory: 'coverage',
 };

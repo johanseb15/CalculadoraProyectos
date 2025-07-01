@@ -130,14 +130,19 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Use Node.js
+      - name: Set up Node.js (LTS Jod)
         uses: actions/setup-node@v4
         with:
-          node-version: '20.x'
+          node-version: '22.16.0'
+      - name: Cache Node.js modules
+        uses: actions/cache@v3
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node-modules-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-modules-
       - run: npm install
       - run: npm test
-```
-
 ## Validación Frontend (React)
 
 ```js

@@ -1,3 +1,4 @@
+// Backup del archivo test antes de eliminarlo. Contenido original:
 import React from 'react';
 import { Estimator } from './client/src/components/Estimator';
 

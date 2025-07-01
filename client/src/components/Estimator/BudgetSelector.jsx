@@ -6,8 +6,18 @@ const options = [
   { value: '15000-30000', label: '$15,000 - $30,000', desc: 'Presupuesto alto' },
   { value: '30000+', label: '$30,000+', desc: 'Presupuesto enterprise' },
 ];
+import PropTypes from 'prop-types';
+
 const BudgetSelector = ({ formData, setFormData }) => (
-  <div>
+  // ... component implementation
+);
+
+BudgetSelector.propTypes = {
+  formData: PropTypes.shape({
+    budget: PropTypes.string
+  }).isRequired,
+  setFormData: PropTypes.func.isRequired
+};  <div>
     <h3 className="text-xl font-semibold text-white mb-4">Rango de presupuesto</h3>
     <div className="space-y-3">
       {options.map((option) => (
