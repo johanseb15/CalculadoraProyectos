@@ -186,7 +186,3 @@ if (!process.env.JWT_SECRET) {
   throw new Error('JWT_SECRET no está definido en las variables de entorno. Configura JWT_SECRET para producción.');
 }
 
-JWT_SECRET=your_super_secret_key_here
-MONGODB_URI=mongodb://localhost/calculadora
-CORS_ORIGIN=http://localhost:5173
-PORT=3001

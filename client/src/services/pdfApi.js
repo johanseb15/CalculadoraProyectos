@@ -1,6 +1,5 @@
 import axios from 'axios';
 
-export async function downloadEstimatePDF({ estimateId, token }) {
 function getApiBaseUrl() {
   return import.meta.env.VITE_API_URL?.replace('/api/estimate', '') ||
          (import.meta.env.MODE === 'production'
@@ -9,16 +8,13 @@ function getApiBaseUrl() {
 }
 
 export async function downloadEstimatePDF({ estimateId, token }) {
-  const baseUrl = getApiBaseUrl();
-  const url = `${baseUrl}/api/pdf/estimate/${estimateId}`;
-
-  // …rest of the implementation…
-}  if (!estimateId || !token) {
+  if (!estimateId || !token) {
     throw new Error('estimateId and token are required');
   }
 
   try {
-    const url = `/api/pdf/estimate/${estimateId}`;
+    const baseUrl = getApiBaseUrl();
+    const url = `${baseUrl}/api/pdf/estimate/${estimateId}`;
     const res = await axios.post(url, {}, {
       responseType: 'blob',
       headers: { Authorization: `Bearer ${token}` },
