@@ -74,8 +74,12 @@ app.use((req, res, next) => {
 const errorHandler = require('./middleware/errorHandler');
 app.use(errorHandler);
 
-// Iniciar servidor
-app.listen(PORT, () => {
-  console.log(`🚀 Servidor ejecutándose en http://localhost:${PORT}`);
-  console.log(`📊 CalculadoraProyectos API v1.0.0`);
-});
+// Iniciar servidor solo si no está en test
+if (process.env.NODE_ENV !== 'test') {
+  app.listen(PORT, () => {
+    console.log(`🚀 Servidor ejecutándose en http://localhost:${PORT}`);
+    console.log(`📊 CalculadoraProyectos API v1.0.0`);
+  });
+}
+
+module.exports = app;

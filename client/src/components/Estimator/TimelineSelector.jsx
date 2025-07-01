@@ -6,18 +6,10 @@ const options = [
   { value: '6-8', label: '6-8 semanas', desc: 'Plazo extendido (-10%)' },
   { value: '8+', label: '8+ semanas', desc: 'Sin prisa' },
 ];
-+import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 
- const TimelineSelector = ({ formData, setFormData }) => (
-   // ... component implementation
- );
-
-+TimelineSelector.propTypes = {
-+  formData: PropTypes.shape({
-+    timeline: PropTypes.string
-+  }).isRequired,
-+  setFormData: PropTypes.func.isRequired
-+};  <div>
+const TimelineSelector = ({ formData, setFormData }) => (
+  <div>
     <h3 className="text-xl font-semibold text-white mb-4">Plazo de entrega (semanas)</h3>
     <div className="space-y-3">
       {options.map((option) => (
@@ -37,4 +29,12 @@ const options = [
     </div>
   </div>
 );
+
+TimelineSelector.propTypes = {
+  formData: PropTypes.shape({
+    timeline: PropTypes.string
+  }).isRequired,
+  setFormData: PropTypes.func.isRequired
+};
+
 export default TimelineSelector;

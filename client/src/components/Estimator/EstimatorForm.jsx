@@ -1,12 +1,12 @@
 // Estimator form stepper
 import React from 'react';
+import projectTypes from '../../config/projectTypes';
+import complexityMultipliers from '../../config/pricing';
 import FeatureSelector from './FeatureSelector';
 import TimelineSelector from './TimelineSelector';
 import BudgetSelector from './BudgetSelector';
 import ContactForm from './ContactForm';
 import { Check, ArrowRight, Sparkles, Info, Shield } from 'lucide-react';
-import projectTypes from '../../config/projectTypes';
-import complexityMultipliers from '../../config/pricing';
 
 const EstimatorForm = ({
   currentStep,

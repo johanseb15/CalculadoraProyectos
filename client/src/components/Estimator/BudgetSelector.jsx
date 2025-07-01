@@ -8,33 +8,35 @@ const options = [
 ];
 import PropTypes from 'prop-types';
 
-const BudgetSelector = ({ formData, setFormData }) => (
-  // ... component implementation
-);
+const BudgetSelector = ({ formData, setFormData }) => {
+  return (
+    <div>
+      <h3 className="text-xl font-semibold text-white mb-4">Rango de presupuesto</h3>
+      <div className="space-y-3">
+        {options.map((option) => (
+          <button
+            key={option.value}
+            onClick={() => setFormData({ ...formData, budget: option.value })}
+            className={`w-full p-4 rounded-xl border-2 transition-all text-left ${
+              formData.budget === option.value
+                ? 'border-purple-500 bg-purple-500/20'
+                : 'border-white/20 bg-white/5 hover:border-purple-500/50'
+            }`}
+          >
+            <div className="text-white font-medium">{option.label}</div>
+            <div className="text-purple-200 text-sm">{option.desc}</div>
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+};
 
 BudgetSelector.propTypes = {
   formData: PropTypes.shape({
     budget: PropTypes.string
   }).isRequired,
   setFormData: PropTypes.func.isRequired
-};  <div>
-    <h3 className="text-xl font-semibold text-white mb-4">Rango de presupuesto</h3>
-    <div className="space-y-3">
-      {options.map((option) => (
-        <button
-          key={option.value}
-          onClick={() => setFormData({ ...formData, budget: option.value })}
-          className={`w-full p-4 rounded-xl border-2 transition-all text-left ${
-            formData.budget === option.value
-              ? 'border-purple-500 bg-purple-500/20'
-              : 'border-white/20 bg-white/5 hover:border-purple-500/50'
-          }`}
-        >
-          <div className="text-white font-medium">{option.label}</div>
-          <div className="text-purple-200 text-sm">{option.desc}</div>
-        </button>
-      ))}
-    </div>
-  </div>
-);
+};
+
 export default BudgetSelector;

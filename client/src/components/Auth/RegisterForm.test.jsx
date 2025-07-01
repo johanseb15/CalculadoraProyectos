@@ -6,7 +6,7 @@ describe('RegisterForm', () => {
   it('renders all fields', () => {
     render(<RegisterForm />);
     expect(screen.getByLabelText(/email/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/contraseña/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/^contraseña$/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/confirmar contraseña/i)).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /registrarse/i })).toBeInTheDocument();
   });
@@ -28,7 +28,7 @@ describe('RegisterForm', () => {
 
   it('shows error for short password', () => {
     render(<RegisterForm />);
-    fireEvent.change(screen.getByLabelText(/contraseña/i), { target: { value: '123' } });
+    fireEvent.change(screen.getByLabelText(/^contraseña$/i), { target: { value: '123' } });
     fireEvent.change(screen.getByLabelText(/confirmar contraseña/i), { target: { value: '123' } });
     fireEvent.click(screen.getByRole('button', { name: /registrarse/i }));
     expect(screen.getByText(/al menos 6 caracteres/i)).toBeInTheDocument();
@@ -36,7 +36,7 @@ describe('RegisterForm', () => {
 
   it('shows error if passwords do not match', () => {
     render(<RegisterForm />);
-    fireEvent.change(screen.getByLabelText(/contraseña/i), { target: { value: '123456' } });
+    fireEvent.change(screen.getByLabelText(/^contraseña$/i), { target: { value: '123456' } });
     fireEvent.change(screen.getByLabelText(/confirmar contraseña/i), { target: { value: '654321' } });
     fireEvent.click(screen.getByRole('button', { name: /registrarse/i }));
     expect(screen.getByText(/no coinciden/i)).toBeInTheDocument();
@@ -45,7 +45,7 @@ describe('RegisterForm', () => {
   it('shows success message on valid submit', () => {
     render(<RegisterForm />);
     fireEvent.change(screen.getByLabelText(/email/i), { target: { value: 'test@email.com' } });
-    fireEvent.change(screen.getByLabelText(/contraseña/i), { target: { value: '123456' } });
+    fireEvent.change(screen.getByLabelText(/^contraseña$/i), { target: { value: '123456' } });
     fireEvent.change(screen.getByLabelText(/confirmar contraseña/i), { target: { value: '123456' } });
     fireEvent.click(screen.getByRole('button', { name: /registrarse/i }));
     expect(screen.getByText(/registro exitoso/i)).toBeInTheDocument();
