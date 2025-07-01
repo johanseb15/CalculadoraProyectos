@@ -71,15 +71,8 @@ app.use((req, res, next) => {
 });
 
 // Error handler
-app.use((err, req, res, next) => {
-  const logger = require('./src/config/logger');
-  logger.error(`Unhandled error: ${err.stack}`);
-  res.status(500).json({
-    success: false,
-    error: 'Internal server error',
-    message: process.env.NODE_ENV === 'development' ? err.message : undefined
-  });
-});
+const errorHandler = require('./middleware/errorHandler');
+app.use(errorHandler);
 
 // Iniciar servidor
 app.listen(PORT, () => {
