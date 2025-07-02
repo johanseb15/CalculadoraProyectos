@@ -27,7 +27,6 @@ jobs:
       - name: Lint (backend)
         run: npm run lint --prefix server
       - name: Ejecutar pruebas (frontend)
-      - name: Ejecutar pruebas (frontend)
         run: npm test --prefix client -- --coverage
       - name: Ejecutar pruebas (backend)
         run: npm test --prefix server -- --coverage
