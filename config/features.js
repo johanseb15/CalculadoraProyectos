@@ -1,3 +1,5 @@
+import features from '../../config/features';
+
 // config/features.js
 const features = [
   { id: 'seo', name: 'Optimización SEO', price: 800, category: 'marketing' },
