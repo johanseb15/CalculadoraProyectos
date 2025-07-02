@@ -1,4 +1,3 @@
-import features from '../../config/features';
 
 // config/features.js
 const features = [
